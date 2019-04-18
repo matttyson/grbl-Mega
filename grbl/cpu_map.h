@@ -152,9 +152,15 @@
   #define STEP_PORT_0 F
   #define STEP_PORT_1 F
   #define STEP_PORT_2 L
-  #define STEP_BIT_0 0  // X Step - Pin A0
-  #define STEP_BIT_1 6  // Y Step - Pin A6
+  #define STEP_PORT_3 A
+  #define STEP_PORT_4 C
+
+  #define STEP_BIT_0 0  // X0 Step - Pin A0
+  #define STEP_BIT_1 6  // Y0 Step - Pin A6
   #define STEP_BIT_2 3  // Z Step - Pin D46
+  #define STEP_BIT_3 4  // X1 Step - Cloned from X0
+  #define STEP_BIT_4 1  // Y1 Step - Cloned from Y1
+
   #define _STEP_BIT(i) STEP_BIT_##i
   #define STEP_BIT(i) _STEP_BIT(i)
   #define STEP_DDR(i) _DDR(STEP_PORT_##i)
@@ -166,9 +172,15 @@
   #define DIRECTION_PORT_0 F
   #define DIRECTION_PORT_1 F
   #define DIRECTION_PORT_2 L
-  #define DIRECTION_BIT_0 1 // X Dir - Pin A1
-  #define DIRECTION_BIT_1 7 // Y Dir - Pin A7
+  #define DIRECTION_PORT_3 A
+  #define DIRECTION_PORT_4 C
+
+  #define DIRECTION_BIT_0 1 // X0 Dir - Pin A1
+  #define DIRECTION_BIT_1 7 // Y0 Dir - Pin A7
   #define DIRECTION_BIT_2 1 // Z Dir - Pin D48
+  #define DIRECTION_BIT_3 6 // X1 Dir
+  #define DIRECTION_BIT_4 3 // Z1 Dir
+
   #define _DIRECTION_BIT(i) DIRECTION_BIT_##i
   #define DIRECTION_BIT(i) _DIRECTION_BIT(i)
   #define DIRECTION_DDR(i) _DDR(DIRECTION_PORT_##i)
@@ -180,9 +192,15 @@
   #define STEPPER_DISABLE_PORT_0 D
   #define STEPPER_DISABLE_PORT_1 F
   #define STEPPER_DISABLE_PORT_2 K
-  #define STEPPER_DISABLE_BIT_0 7 // X Enable - Pin D38
-  #define STEPPER_DISABLE_BIT_1 2 // Y Enable - Pin A2
+  #define STEPPER_DISABLE_PORT_3 A
+  #define STEPPER_DISABLE_PORT_4 C
+
+  #define STEPPER_DISABLE_BIT_0 7 // X0 Enable - Pin D38
+  #define STEPPER_DISABLE_BIT_1 2 // Y0 Enable - Pin A2
   #define STEPPER_DISABLE_BIT_2 0 // Z Enable - Pin A8
+  #define STEPPER_DISABLE_BIT_3 2 // X1 Enable
+  #define STEPPER_DISABLE_BIT_4 7 // Y1 Enable
+
   #define STEPPER_DISABLE_BIT(i) STEPPER_DISABLE_BIT_##i
   #define STEPPER_DISABLE_DDR(i) _DDR(STEPPER_DISABLE_PORT_##i)
   #define STEPPER_DISABLE_PORT(i) _PORT(STEPPER_DISABLE_PORT_##i)
