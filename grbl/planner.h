@@ -51,10 +51,10 @@
 typedef struct {
   // Fields used by the bresenham algorithm for tracing the line
   // NOTE: Used by stepper algorithm to execute the block correctly. Do not alter these values.
-  uint32_t steps[N_AXIS];    // Step count along each axis
+  uint32_t steps[N_MOVE_AXIS];    // Step count along each axis
   uint32_t step_event_count; // The maximum step axis count and number of steps required to complete this block.
   #ifdef DEFAULTS_RAMPS_BOARD
-    uint8_t direction_bits[N_AXIS];    // The direction bit set for this block (refers to *_DIRECTION_BIT in config.h)
+    uint8_t direction_bits[N_MOVE_AXIS];    // The direction bit set for this block (refers to *_DIRECTION_BIT in config.h)
   #else
     uint8_t direction_bits;    // The direction bit set for this block (refers to *_DIRECTION_BIT in config.h)
   #endif // DEFAULTS_RAMPS_BOARD

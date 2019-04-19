@@ -315,8 +315,11 @@ uint8_t get_step_pin_mask(uint8_t axis_idx)
   #ifdef DEFAULTS_RAMPS_BOARD
     if ( axis_idx == X_AXIS ) { return((1<<STEP_BIT(X_AXIS))); }
     if ( axis_idx == Y_AXIS ) { return((1<<STEP_BIT(Y_AXIS))); }
+    if ( axis_idx == X1_AXIS ) { return((1<<STEP_BIT(X1_AXIS))); }
+    if ( axis_idx == Y1_AXIS ) { return((1<<STEP_BIT(Y1_AXIS))); }
     return((1<<STEP_BIT(Z_AXIS)));
   #else
+  #error foo
     if ( axis_idx == X_AXIS ) { return((1<<X_STEP_BIT)); }
     if ( axis_idx == Y_AXIS ) { return((1<<Y_STEP_BIT)); }
     return((1<<Z_STEP_BIT));
@@ -330,8 +333,11 @@ uint8_t get_direction_pin_mask(uint8_t axis_idx)
   #ifdef DEFAULTS_RAMPS_BOARD
     if ( axis_idx == X_AXIS ) { return((1<<DIRECTION_BIT(X_AXIS))); }
     if ( axis_idx == Y_AXIS ) { return((1<<DIRECTION_BIT(Y_AXIS))); }
+    if ( axis_idx == X1_AXIS ) { return((1<<DIRECTION_BIT(X1_AXIS))); }
+    if ( axis_idx == Y1_AXIS ) { return((1<<DIRECTION_BIT(Y1_AXIS))); }
     return((1<<DIRECTION_BIT(Z_AXIS)));
   #else
+  #error foo
     if ( axis_idx == X_AXIS ) { return((1<<X_DIRECTION_BIT)); }
     if ( axis_idx == Y_AXIS ) { return((1<<Y_DIRECTION_BIT)); }
     return((1<<Z_DIRECTION_BIT));

@@ -124,7 +124,7 @@ typedef struct {
   uint8_t step_control;        // Governs the step segment generator depending on system state.
   uint8_t probe_succeeded;     // Tracks if last probing cycle was successful.
   #ifdef DEFAULTS_RAMPS_BOARD
-    uint8_t homing_axis_lock[N_AXIS];    // Locks axes when limits engage. Used as an axis motion mask in the stepper ISR.
+    uint8_t homing_axis_lock[N_MOVE_AXIS];    // Locks axes when limits engage. Used as an axis motion mask in the stepper ISR.
   #else
     uint8_t homing_axis_lock;    // Locks axes when limits engage. Used as an axis motion mask in the stepper ISR.
   #endif

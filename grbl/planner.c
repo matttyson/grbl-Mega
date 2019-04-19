@@ -366,16 +366,35 @@ uint8_t plan_buffer_line(float *target, plan_line_data_t *pl_data)
       block->steps[idx] = labs(target_steps[idx]-position_steps[idx]);
       block->step_event_count = max(block->step_event_count, block->steps[idx]);
       delta_mm = (target_steps[idx] - position_steps[idx])/settings.steps_per_mm[idx];
-	  #endif
+         #endif
     unit_vec[idx] = delta_mm; // Store unit vector numerator
 
     // Set direction bits. Bit enabled always means direction is negative.
     #ifdef DEFAULTS_RAMPS_BOARD
-      if (delta_mm < 0.0 ) { block->direction_bits[idx] |= get_direction_pin_mask(idx); }
+      if (delta_mm < 0.0 ) {
+          block->direction_bits[idx] |= get_direction_pin_mask(idx);
+
+          // Clone the direction bits to the X1 and Y1 axis drivers.
+          if (idx == X_AXIS) {
+              block->direction_bits[X1_AXIS] |= get_direction_pin_mask(X1_AXIS);
+          }
+          else if (idx == Y_AXIS ){
+              block->direction_bits[Y1_AXIS] |= get_direction_pin_mask(Y1_AXIS);
+          }
+      }
     #else
       if (delta_mm < 0.0 ) { block->direction_bits |= get_direction_pin_mask(idx); }
     #endif // DEFAULTS_RAMPS_BOARD
   }
+
+  // Clone the target steps to the X1 and Y1 axises
+  // For reasons I don't understand the E0 and E1 drivers
+  // need to have 4x the steps.
+  block->steps[X1_AXIS] = block->steps[X_AXIS];
+  block->steps[Y1_AXIS] = block->steps[Y_AXIS];
+  //for(idx = 0; idx < N_MOVE_AXIS; idx++){
+  //    block->step_event_count = max(block->step_event_count, block->steps[idx]);
+  //}
 
   // Bail if this is a zero-length block. Highly unlikely to occur.
   if (block->step_event_count == 0) { return(PLAN_EMPTY_BLOCK); }
