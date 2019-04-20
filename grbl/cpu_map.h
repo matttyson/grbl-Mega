@@ -134,6 +134,22 @@
 
 #endif
 
+#ifdef CPU_MAP_MKS_BASE_15
+  #define CPU_MAP_2560_RAMPS_BOARD
+
+  #define X_MS1_PIN            5   // Digital 5  / Pin 5   / PE3  / SERVO2_PIN
+  #define X_MS2_PIN            6   // Digital 6  / Pin 14  / PH3  / SERVO1_PIN
+  #define Y_MS1_PIN           59   // Analog 5   / Pin 92  / PF5
+  #define Y_MS2_PIN           58   // Analog 4   / Pin 93  / PF4
+  #define Z_MS1_PIN           22   // Digital 22 / Pin 78  / PA0
+  #define Z_MS2_PIN           39   // Digital 39 / Pin 70  / PG2
+  #define E0_MS1_PIN          63   // Analog 9   / Pin 86  / PK1
+  #define E0_MS2_PIN          64   // Analog 10  / Pin 87  / PK2
+  #define E1_MS1_PIN          57   // Analog 3   / Pin 93  / PF3
+  #define E1_MS2_PIN           4   // Digital 4  / Pin 1   / PG5  / SERVO3_PIN
+#endif
+
+
 #ifdef CPU_MAP_2560_RAMPS_BOARD // (Arduino Mega 2560) with Ramps 1.4 Board
   #include "nuts_bolts.h"
 
@@ -159,9 +175,9 @@
 
   #define STEP_BIT_0 0  // X0 Step - Pin A0
   #define STEP_BIT_1 6  // Y0 Step - Pin A6
-  #define STEP_BIT_2 3  // Z Step - Pin D46
-  #define STEP_BIT_3 4  // X1 Step - Cloned from X0
-  #define STEP_BIT_4 1  // Y1 Step - Cloned from Y1
+  #define STEP_BIT_2 3  // Z Step  - Pin D46
+  #define STEP_BIT_3 4  // X1 Step - Pin D26 - Cloned from X0
+  #define STEP_BIT_4 1  // Y1 Step - Pin D36 - Cloned from Y1
 
   #define _STEP_BIT(i) STEP_BIT_##i
   #define STEP_BIT(i) _STEP_BIT(i)
@@ -179,9 +195,9 @@
 
   #define DIRECTION_BIT_0 1 // X0 Dir - Pin A1
   #define DIRECTION_BIT_1 7 // Y0 Dir - Pin A7
-  #define DIRECTION_BIT_2 1 // Z Dir - Pin D48
-  #define DIRECTION_BIT_3 6 // X1 Dir
-  #define DIRECTION_BIT_4 3 // Z1 Dir
+  #define DIRECTION_BIT_2 1 // Z Dir  - Pin D48
+  #define DIRECTION_BIT_3 6 // X1 Dir - Pin D28
+  #define DIRECTION_BIT_4 3 // Z1 Dir - Pin D34
 
   #define _DIRECTION_BIT(i) DIRECTION_BIT_##i
   #define DIRECTION_BIT(i) _DIRECTION_BIT(i)
@@ -199,9 +215,9 @@
 
   #define STEPPER_DISABLE_BIT_0 7 // X0 Enable - Pin D38
   #define STEPPER_DISABLE_BIT_1 2 // Y0 Enable - Pin A2
-  #define STEPPER_DISABLE_BIT_2 0 // Z Enable - Pin A8
-  #define STEPPER_DISABLE_BIT_3 2 // X1 Enable
-  #define STEPPER_DISABLE_BIT_4 7 // Y1 Enable
+  #define STEPPER_DISABLE_BIT_2 0 // Z Enable  - Pin A8
+  #define STEPPER_DISABLE_BIT_3 2 // X1 Enable - Pin D24
+  #define STEPPER_DISABLE_BIT_4 7 // Y1 Enable - Pin D30
 
   #define STEPPER_DISABLE_BIT(i) STEPPER_DISABLE_BIT_##i
   #define STEPPER_DISABLE_DDR(i) _DDR(STEPPER_DISABLE_PORT_##i)
@@ -257,6 +273,8 @@
 
   // Define user-control CONTROLs (cycle start, reset, feed hold) input pins.
   // NOTE: All CONTROLs pins must be on the same port and not on a port with other input pins (limits).
+
+  /*
   #define CONTROL_DDR       DDRK
   #define CONTROL_PIN       PINK
   #define CONTROL_PORT      PORTK
@@ -268,6 +286,7 @@
   #define CONTROL_INT_vect  PCINT2_vect
   #define CONTROL_PCMSK     PCMSK2 // Pin change interrupt register
   #define CONTROL_MASK      ((1<<CONTROL_RESET_BIT)|(1<<CONTROL_FEED_HOLD_BIT)|(1<<CONTROL_CYCLE_START_BIT)|(1<<CONTROL_SAFETY_DOOR_BIT))
+*/
 
   // Define probe switch input pin.
   #define PROBE_DDR       DDRK

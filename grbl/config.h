@@ -39,7 +39,8 @@
 
 // To use with RAMPS 1.4 Board, comment out the above defines and uncomment the next two defines
  #define DEFAULTS_RAMPS_BOARD
- #define CPU_MAP_2560_RAMPS_BOARD
+ #define CPU_MAP_MKS_BASE_15
+ //#define CPU_MAP_2560_RAMPS_BOARD
 
 // Serial baud rate
 // #define BAUD_RATE 230400

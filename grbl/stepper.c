@@ -221,12 +221,44 @@ static st_prep_t prep;
   are shown and defined in the above illustration.
 */
 
+// Switch off microstepping
+void st_microstepping()
+{
+#ifdef CPU_MAP_MKS_BASE_15
+    // X_MS_1
+    DDRE  |= 0b00001000;
+    PORTE &= 0b11110111;
+    DDRH  |= 0b00001000;
+    PORTH &= 0b11110111;
+
+    // Y Microstepping.
+    DDRF  |= 0b00110000;
+    PORTF &= 0b11001111;
+
+    // Z Microstepping
+    DDRA  |= 0b00000001;
+    PORTA &= 0b11111110;
+    DDRG  |= 0b00000100;
+    PORTG &= 0b11111011;
+
+    // E0 Microstepping
+    DDRK  |= 0b00000110;
+    PORTK &= 0b11111001;
+
+    // E1 Microstepping;
+    DDRF  |= 0b00001000;
+    PORTF &= 0b11110111;
+    DDRG  |= 0b00100000;
+    PORTG &= 0b11011111;
+#endif
+}
 
 // Stepper state initialization. Cycle should only start if the st.cycle_start flag is
 // enabled. Startup init and limits call this function but shouldn't start the cycle.
 
 void st_wake_up()
 {
+  st_microstepping();
   // Enable stepper drivers.
   #ifdef DEFAULTS_RAMPS_BOARD
     if (bit_istrue(settings.flags,BITFLAG_INVERT_ST_ENABLE)) {

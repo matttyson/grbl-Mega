@@ -388,13 +388,8 @@ uint8_t plan_buffer_line(float *target, plan_line_data_t *pl_data)
   }
 
   // Clone the target steps to the X1 and Y1 axises
-  // For reasons I don't understand the E0 and E1 drivers
-  // need to have 4x the steps.
   block->steps[X1_AXIS] = block->steps[X_AXIS];
   block->steps[Y1_AXIS] = block->steps[Y_AXIS];
-  //for(idx = 0; idx < N_MOVE_AXIS; idx++){
-  //    block->step_event_count = max(block->step_event_count, block->steps[idx]);
-  //}
 
   // Bail if this is a zero-length block. Highly unlikely to occur.
   if (block->step_event_count == 0) { return(PLAN_EMPTY_BLOCK); }

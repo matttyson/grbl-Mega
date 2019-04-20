@@ -21,8 +21,12 @@
 #include "grbl.h"
 
 
+// TODO FIXME - The pins for the control mask conflict with the MKS BASE software defined stepping pins
+// Disable them until I get it figured out.  I'm not even sure if I care about this feature yet.
+
 void system_init()
 {
+    /*
   CONTROL_DDR &= ~(CONTROL_MASK); // Configure as input pins
   #ifdef DISABLE_CONTROL_PIN_PULL_UP
     CONTROL_PORT &= ~(CONTROL_MASK); // Normal low operation. Requires external pull-down.
@@ -31,6 +35,7 @@ void system_init()
   #endif
   CONTROL_PCMSK |= CONTROL_MASK;  // Enable specific pins of the Pin Change Interrupt
   PCICR |= (1 << CONTROL_INT);   // Enable Pin Change Interrupt
+  */
 }
 
 
@@ -39,6 +44,8 @@ void system_init()
 // defined by the CONTROL_PIN_INDEX in the header file.
 uint8_t system_control_get_state()
 {
+   return 0;
+    /*
   uint8_t control_state = 0;
   uint8_t pin = (CONTROL_PIN & CONTROL_MASK);
   #ifdef INVERT_CONTROL_PIN_MASK
@@ -51,6 +58,7 @@ uint8_t system_control_get_state()
     if (bit_isfalse(pin,(1<<CONTROL_CYCLE_START_BIT))) { control_state |= CONTROL_PIN_INDEX_CYCLE_START; }
   }
   return(control_state);
+  */
 }
 
 
@@ -58,6 +66,7 @@ uint8_t system_control_get_state()
 // only the realtime command execute variable to have the main program execute these when
 // its ready. This works exactly like the character-based realtime commands when picked off
 // directly from the incoming serial data stream.
+/*
 ISR(CONTROL_INT_vect)
 {
   uint8_t pin = system_control_get_state();
@@ -73,12 +82,13 @@ ISR(CONTROL_INT_vect)
     } 
   }
 }
+*/
 
 
 // Returns if safety door is ajar(T) or closed(F), based on pin state.
 uint8_t system_check_safety_door_ajar()
 {
-    return(system_control_get_state() & CONTROL_PIN_INDEX_SAFETY_DOOR);
+    return 0; //return(system_control_get_state() & CONTROL_PIN_INDEX_SAFETY_DOOR);
 }
 
 
