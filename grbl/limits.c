@@ -58,8 +58,12 @@ void limits_init()
     #endif
     #ifndef DISABLE_HW_LIMITS
       if (bit_istrue(settings.flags,BITFLAG_HARD_LIMIT_ENABLE)) {
-        LIMIT_PCMSK |= LIMIT_MASK; // Enable specific pins of the Pin Change Interrupt
-        PCICR |= (1 << LIMIT_INT); // Enable Pin Change Interrupt
+        // Note; ECIR[AB] must be configured before EIMSK or an interrupt will be triggered
+        EICRA  |= 0b11110000; // Rising edge generate interrupt.  INT2 INT3
+        EICRB  |= 0b00001111; // Rising edge generate interrupt.  INT4 INT5
+        EIMSK  |= 0b00111100; // Enable Interrupts for INT2,3,4,5
+
+//      PCIR   |= 0b00000010; // Enable pin change interrupts for PCINT9, 10
       } else {
         limits_disable();
       }
@@ -99,8 +103,9 @@ void limits_disable()
 {
   #ifdef DEFAULTS_RAMPS_BOARD
     #ifndef DISABLE_HW_LIMITS
-     LIMIT_PCMSK &= ~LIMIT_MASK;  // Disable specific pins of the Pin Change Interrupt
-     PCICR &= ~(1 << LIMIT_INT);  // Disable Pin Change Interrupt
+     // TODO FIXME
+     EIMSK = 0; // disable interupts
+     //PCIR &= ~0b00000010;
     #endif
   #else
     LIMIT_PCMSK &= ~LIMIT_MASK;  // Disable specific pins of the Pin Change Interrupt
@@ -126,6 +131,34 @@ uint8_t limits_get_state()
     #ifdef INVERT_LIMIT_PIN_MASK
       #error "INVERT_LIMIT_PIN_MASK is not implemented"
     #endif
+
+    // If the pin is logic 1, then it has been tripped
+    if(PINE & 0b00010000){  // PIN E5 - X-MIN
+        limit_state |= (1 << 0);
+    }
+
+    if(PINJ & 0b00000010) { // PIN J1 - Y-MIN
+        //limit_state |= (1 << 1);
+    }
+
+    if(PIND & 0b00000100){  // PIN D3 - Z-MIN
+        limit_state |= (1 << 2);
+    }
+
+    if(PIND & 0b00001000){  // PIN E4 - X-MAX
+        limit_state |= (1 << 3);
+    }
+
+    if(PINJ & 0b00000001){  // PIN J0 - Y-MAX
+        //limit_state |= (1 << 4);
+    }
+
+    if(PIND & 0b00000100) { // PIN D2 - Z-MAX
+        limit_state |= (1 << 5);
+    }
+
+
+    /*
     for (idx=0; idx<N_AXIS; idx++) {
       pin = *max_limit_pins[idx] & (1<<max_limit_bits[idx]);
       pin = !!pin;
@@ -144,6 +177,7 @@ uint8_t limits_get_state()
       if (pin)
         limit_state |= (1 << idx);
     } 
+    */
     return(limit_state);
   #else
     uint8_t pin = (LIMIT_PIN & LIMIT_MASK);
@@ -161,11 +195,11 @@ uint8_t limits_get_state()
   #endif //DEFAULTS_RAMPS_BOARD
 }
 
-#ifdef DEFAULTS_RAMPS_BOARD
-  #ifndef DISABLE_HW_LIMITS
-    #error "HW limits are not implemented"
-  #endif
-#else
+//#ifdef DEFAULTS_RAMPS_BOARD
+//  #ifndef DISABLE_HW_LIMITS
+    //#error "HW limits are not implemented"
+//  #endif
+//#else
 // This is the Limit Pin Change Interrupt, which handles the hard limit feature. A bouncing 
 // limit switch can cause a lot of problems, like false readings and multiple interrupt calls.
 // If a switch is triggered at all, something bad has happened and treat it as such, regardless
@@ -178,7 +212,8 @@ uint8_t limits_get_state()
 // special pinout for an e-stop, but it is generally recommended to just directly connect
 // your e-stop switch to the Arduino reset pin, since it is the most correct way to do this.
   #ifndef ENABLE_SOFTWARE_DEBOUNCE
-    ISR(LIMIT_INT_vect) // DEFAULT: Limit pin change interrupt process. 
+
+    static void do_limit_interrupt(void)
     {
       // Ignore limit switches if already in an alarm state or in-process of executing an alarm.
       // When in the alarm state, Grbl should have been reset or will force a reset, so any pending 
@@ -202,6 +237,7 @@ uint8_t limits_get_state()
     }  
   #else // OPTIONAL: Software debounce limit pin routine.
     // Upon limit pin change, enable watchdog timer to create a short delay. 
+    #error not implemented
     ISR(LIMIT_INT_vect) { if (!(WDTCSR & (1<<WDIE))) { WDTCSR |= (1<<WDIE); } }
     ISR(WDT_vect) // Watchdog timer ISR
     {
@@ -217,7 +253,7 @@ uint8_t limits_get_state()
       }
     }
   #endif
-#endif // DEFAULTS_RAMPS_BOARD
+//#endif // DEFAULTS_RAMPS_BOARD
 
 #ifdef DEFAULTS_RAMPS_BOARD
   static uint8_t axislock_active(uint8_t *axislock)
@@ -565,4 +601,27 @@ void limits_soft_check(float *target)
     protocol_execute_realtime(); // Execute to enter critical event loop and system abort
     return;
   }
+}
+
+ISR(INT2_vect)
+{
+    do_limit_interrupt();
+}
+ISR(INT3_vect)
+{
+    do_limit_interrupt();
+}
+ISR(INT4_vect)
+{
+    do_limit_interrupt();
+}
+ISR(INT5_vect)
+{
+    do_limit_interrupt();
+}
+ISR(PCINT0_vect)
+{
+    if(PORTJ & 0b00000011){
+        do_limit_interrupt();
+    }
 }

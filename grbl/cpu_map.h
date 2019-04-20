@@ -228,9 +228,9 @@
   #define MIN_LIMIT_PORT_0 E
   #define MIN_LIMIT_PORT_1 J
   #define MIN_LIMIT_PORT_2 D
-  #define MIN_LIMIT_BIT_0 5 // X Limit Min - Pin D3
-  #define MIN_LIMIT_BIT_1 1 // Y Limit Min - Pin D14
-  #define MIN_LIMIT_BIT_2 3 // Z Limit Min - Pin D18
+  #define MIN_LIMIT_BIT_0 5 // X Limit Min - Pin D3  (PE5, 07) - INT5
+  #define MIN_LIMIT_BIT_1 1 // Y Limit Min - Pin D14 (PJ1, 64) - PCINT10
+  #define MIN_LIMIT_BIT_2 3 // Z Limit Min - Pin D18 (PD3, 46) - INT3
   #define _MIN_LIMIT_BIT(i) MIN_LIMIT_BIT_##i
   #define MIN_LIMIT_BIT(i) _MIN_LIMIT_BIT(i)
   #define MIN_LIMIT_DDR(i) _DDR(MIN_LIMIT_PORT_##i)
@@ -240,20 +240,22 @@
   #define MAX_LIMIT_PORT_0 E
   #define MAX_LIMIT_PORT_1 J
   #define MAX_LIMIT_PORT_2 D
-  #define MAX_LIMIT_BIT_0 4 // X Limit Max - Pin D2
-  #define MAX_LIMIT_BIT_1 0 // Y Limit Max - Pin D15
-  #define MAX_LIMIT_BIT_2 2 // Z Limit Max - Pin D19
+  #define MAX_LIMIT_BIT_0 4 // X Limit Max - Pin D2  (PE4, 06) - INT4
+  #define MAX_LIMIT_BIT_1 0 // Y Limit Max - Pin D15 (PJ0, 63) - PCINT9
+  #define MAX_LIMIT_BIT_2 2 // Z Limit Max - Pin D19 (PD2, 45) - INT2
   #define _MAX_LIMIT_BIT(i) MAX_LIMIT_BIT_##i
   #define MAX_LIMIT_BIT(i) _MAX_LIMIT_BIT(i)
   #define MAX_LIMIT_DDR(i) _DDR(MAX_LIMIT_PORT_##i)
   #define MAX_LIMIT_PORT(i) _PORT(MAX_LIMIT_PORT_##i)
   #define MAX_LIMIT_PIN(i) _PIN(MAX_LIMIT_PORT_##i)
 
+  #define LIMIT_INT_MSK0 0b00111100
+  #define LIMIT_INT_MSK1 0b00000110
   //  #define LIMIT_INT       PCIE0  // Pin change interrupt enable pin
   //  #define LIMIT_INT_vect  PCINT0_vect 
   //  #define LIMIT_PCMSK     PCMSK0 // Pin change interrupt register
   //  #define LIMIT_MASK ((1<<X_LIMIT_BIT)|(1<<Y_LIMIT_BIT)|(1<<Z_LIMIT_BIT)) // All limit bits
-  #define DISABLE_HW_LIMITS
+  //  #define DISABLE_HW_LIMITS
 
   // Define spindle enable and spindle direction output pins.
   #define SPINDLE_ENABLE_DDR      DDRG
