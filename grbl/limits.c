@@ -292,11 +292,11 @@ void limits_go_home(uint8_t cycle_mask)
 
   // Initialize variables used for homing computations.
   uint8_t n_cycle = (2*N_HOMING_LOCATE_CYCLE+1);
-  uint8_t step_pin[N_AXIS];
-  float target[N_AXIS];
+  uint8_t step_pin[N_MOVE_AXIS];
+  float target[N_MOVE_AXIS];
   float max_travel = 0.0;
   uint8_t idx;
-  for (idx=0; idx<N_AXIS; idx++) {
+  for (idx=0; idx<N_MOVE_AXIS; idx++) {
     // Initialize step pin masks
     step_pin[idx] = get_step_pin_mask(idx);
     #ifdef COREXY
@@ -314,14 +314,14 @@ void limits_go_home(uint8_t cycle_mask)
   float homing_rate = settings.homing_seek_rate;
   #ifdef DEFAULTS_RAMPS_BOARD
     uint8_t limit_state, n_active_axis;
-    uint8_t axislock[N_AXIS];
+    uint8_t axislock[N_MOVE_AXIS];
     do {
 
       system_convert_array_steps_to_mpos(target,sys_position);
 
       // Initialize and declare variables needed for homing routine.
       n_active_axis = 0;
-      for (idx=0; idx<N_AXIS; idx++) {
+      for (idx=0; idx<N_MOVE_AXIS; idx++) {
         axislock[idx]=0;
         // Set target location for active axes and setup computation for homing rate.
         if (bit_istrue(cycle_mask,bit(idx))) {
@@ -357,7 +357,6 @@ void limits_go_home(uint8_t cycle_mask)
       }
       homing_rate *= sqrt(n_active_axis); // [sqrt(N_AXIS)] Adjust so individual axes all move at homing rate.
       
-
       // Perform homing cycle. Planner buffer should be empty, as required to initiate the homing cycle.
       pl_data->feed_rate = homing_rate; // Set current homing rate.
       plan_buffer_line(target, pl_data); // Bypass mc_line(). Directly plan homing motion.
@@ -369,7 +368,7 @@ void limits_go_home(uint8_t cycle_mask)
         if (approach) {
           // Check limit state. Lock out cycle axes when they change.
           limit_state = limits_get_state();
-          for (idx=0; idx<N_AXIS; idx++) {
+          for (idx=0; idx<N_MOVE_AXIS; idx++) {
             if (axislock[idx] & step_pin[idx]) {
               if (limit_state & (1 << idx)) {
                 #ifdef COREXY
@@ -544,7 +543,7 @@ void limits_go_home(uint8_t cycle_mask)
   // triggering when hard limits are enabled or when more than one axes shares a limit pin.
   int32_t set_axis_position;
   // Set machine positions for homed limit switches. Don't update non-homed axes.
-  for (idx=0; idx<N_AXIS; idx++) {
+  for (idx=0; idx<N_MOVE_AXIS; idx++) {
     // NOTE: settings.max_travel[] is stored as a negative value.
     if (cycle_mask & bit(idx)) {
       #ifdef HOMING_FORCE_SET_ORIGIN

@@ -49,6 +49,8 @@ const __flash settings_t defaults = {\
     .steps_per_mm[X_AXIS] = DEFAULT_X_STEPS_PER_MM,
     .steps_per_mm[Y_AXIS] = DEFAULT_Y_STEPS_PER_MM,
     .steps_per_mm[Z_AXIS] = DEFAULT_Z_STEPS_PER_MM,
+    .steps_per_mm[X1_AXIS] = DEFAULT_X_STEPS_PER_MM,
+    .steps_per_mm[Y1_AXIS] = DEFAULT_Y_STEPS_PER_MM,
     .max_rate[X_AXIS] = DEFAULT_X_MAX_RATE,
     .max_rate[Y_AXIS] = DEFAULT_Y_MAX_RATE,
     .max_rate[Z_AXIS] = DEFAULT_Z_MAX_RATE,
@@ -57,7 +59,10 @@ const __flash settings_t defaults = {\
     .acceleration[Z_AXIS] = DEFAULT_Z_ACCELERATION,
     .max_travel[X_AXIS] = (-DEFAULT_X_MAX_TRAVEL),
     .max_travel[Y_AXIS] = (-DEFAULT_Y_MAX_TRAVEL),
-    .max_travel[Z_AXIS] = (-DEFAULT_Z_MAX_TRAVEL)};
+    .max_travel[Z_AXIS] = (-DEFAULT_Z_MAX_TRAVEL),
+    .max_travel[X1_AXIS] = (-DEFAULT_X_MAX_TRAVEL),
+    .max_travel[Y1_AXIS] = (-DEFAULT_Y_MAX_TRAVEL)
+    };
 
 
 // Method to store startup lines into EEPROM
@@ -206,6 +211,12 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
               if (value*settings.max_rate[parameter] > (MAX_STEP_RATE_HZ*60.0)) { return(STATUS_MAX_STEP_RATE_EXCEEDED); }
             #endif
             settings.steps_per_mm[parameter] = value;
+            if(parameter == X_AXIS){
+              settings.steps_per_mm[X1_AXIS] = value;
+            }
+            if(parameter == Y_AXIS){
+              settings.steps_per_mm[Y1_AXIS] = value;
+            }
             break;
           case 1:
             #ifdef MAX_STEP_RATE_HZ
@@ -214,7 +225,15 @@ uint8_t settings_store_global_setting(uint8_t parameter, float value) {
             settings.max_rate[parameter] = value;
             break;
           case 2: settings.acceleration[parameter] = value*60*60; break; // Convert to mm/min^2 for grbl internal use.
-          case 3: settings.max_travel[parameter] = -value; break;  // Store as negative for grbl internal use.
+          case 3:
+            settings.max_travel[parameter] = -value;
+            if(parameter == X_AXIS){
+              settings.max_travel[X1_AXIS] = -value;
+            }
+            if(parameter == Y_AXIS){
+              settings.max_travel[Y1_AXIS] = -value;
+            }
+            break;  // Store as negative for grbl internal use.
         }
         break; // Exit while-loop after setting has been configured and proceed to the EEPROM write call.
       } else {
