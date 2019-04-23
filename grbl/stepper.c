@@ -224,32 +224,38 @@ static st_prep_t prep;
 // Switch off microstepping
 void st_microstepping()
 {
-#ifdef CPU_MAP_MKS_BASE_15
-    // X_MS_1
-    DDRE  |= 0b00001000;
-    PORTE &= 0b11110111;
-    DDRH  |= 0b00001000;
-    PORTH &= 0b11110111;
+#ifdef HAS_SOFTWARE_MICROSTEPPING
+    /* Configure the microstepping */
 
-    // Y Microstepping.
-    DDRF  |= 0b00110000;
-    PORTF &= 0b11001111;
+    X_MS1_DDR |= (1 << X_MS1_BIT);
+    X_MS2_DDR |= (1 << X_MS2_BIT);
 
-    // Z Microstepping
-    DDRA  |= 0b00000001;
-    PORTA &= 0b11111110;
-    DDRG  |= 0b00000100;
-    PORTG &= 0b11111011;
+    Y_MS1_DDR |= (1 << Y_MS1_BIT);
+    Y_MS2_DDR |= (1 << Y_MS2_BIT);
 
-    // E0 Microstepping
-    DDRK  |= 0b00000110;
-    PORTK &= 0b11111001;
+    Z_MS1_DDR |= (1 << Z_MS1_BIT);
+    Z_MS2_DDR |= (1 << Z_MS2_BIT);
 
-    // E1 Microstepping;
-    DDRF  |= 0b00001000;
-    PORTF &= 0b11110111;
-    DDRG  |= 0b00100000;
-    PORTG &= 0b11011111;
+    E0_MS1_DDR |= (1 << E0_MS1_BIT);
+    E0_MS2_DDR |= (1 << E0_MS2_BIT);
+
+    E1_MS1_DDR |= (1 << E1_MS1_BIT);
+    E1_MS2_DDR |= (1 << E1_MS2_BIT);
+
+    X_MS1_PORT = (X_MS1_PORT & ~(1 << X_MS1_BIT)) | (MS1_XY_VALUE << X_MS1_BIT);
+    X_MS1_PORT = (X_MS2_PORT & ~(1 << X_MS2_BIT)) | (MS1_XY_VALUE << X_MS1_BIT);
+
+    Y_MS1_PORT = (Y_MS1_PORT & ~(1 << Y_MS1_BIT)) | (MS1_XY_VALUE << Y_MS1_BIT);
+    Y_MS1_PORT = (Y_MS2_PORT & ~(1 << Y_MS2_BIT)) | (MS1_XY_VALUE << Y_MS1_BIT);
+
+    Z_MS1_PORT = (Z_MS1_PORT & ~(1 << Z_MS1_BIT)) | (MS1_Z_VALUE << Z_MS1_BIT);
+    Z_MS1_PORT = (Z_MS2_PORT & ~(1 << Z_MS2_BIT)) | (MS1_Z_VALUE << Z_MS1_BIT);
+
+    E0_MS1_PORT = (E0_MS1_PORT & ~(1 << E0_MS1_BIT)) | (MS1_XY_VALUE << E0_MS1_BIT);
+    E0_MS1_PORT = (E0_MS2_PORT & ~(1 << E0_MS2_BIT)) | (MS1_XY_VALUE << E0_MS1_BIT);
+
+    E1_MS1_PORT = (E1_MS1_PORT & ~(1 << E1_MS1_BIT)) | (MS1_XY_VALUE << E1_MS1_BIT);
+    E1_MS1_PORT = (E1_MS2_PORT & ~(1 << E1_MS2_BIT)) | (MS1_XY_VALUE << E1_MS1_BIT);
 #endif
 }
 

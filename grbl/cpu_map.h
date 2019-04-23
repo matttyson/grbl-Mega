@@ -135,18 +135,65 @@
 #endif
 
 #ifdef CPU_MAP_MKS_BASE_15
+
+/*
+   The MKS Base 1.5 RAMPS board has the microstepping controlled by pins on the
+   AVR micro itself, so we must configure the microstepping in code.
+
+   A4982 diver microstepping truth table
+
+    |1|2|Resolution|
+    ----------------
+    |0|0|Full Step
+    |1|0|Half Step
+    |0|1|Quarter Step
+    |1|1|Sixteenth Step
+*/
+
+  #define HAS_SOFTWARE_MICROSTEPPING
   #define CPU_MAP_2560_RAMPS_BOARD
 
-  #define X_MS1_PIN            5   // Digital 5  / Pin 5   / PE3  / SERVO2_PIN
-  #define X_MS2_PIN            6   // Digital 6  / Pin 14  / PH3  / SERVO1_PIN
-  #define Y_MS1_PIN           59   // Analog 5   / Pin 92  / PF5
-  #define Y_MS2_PIN           58   // Analog 4   / Pin 93  / PF4
-  #define Z_MS1_PIN           22   // Digital 22 / Pin 78  / PA0
-  #define Z_MS2_PIN           39   // Digital 39 / Pin 70  / PG2
-  #define E0_MS1_PIN          63   // Analog 9   / Pin 86  / PK1
-  #define E0_MS2_PIN          64   // Analog 10  / Pin 87  / PK2
-  #define E1_MS1_PIN          57   // Analog 3   / Pin 93  / PF3
-  #define E1_MS2_PIN           4   // Digital 4  / Pin 1   / PG5  / SERVO3_PIN
+  /* The microstepping values for the driver */
+  #define MS1_XY_VALUE 1
+  #define MS2_XY_VALUE 1
+
+  #define MS1_Z_VALUE 0
+  #define MS2_Z_VALUE 0
+
+  #define X_MS1_BIT           3   // Digital 5  / Pin 5   / PE3  / SERVO2_PIN
+  #define X_MS1_PORT          PORTE
+  #define X_MS1_DDR           DDRE
+  #define X_MS2_BIT           3   // Digital 6  / Pin 14  / PH3  / SERVO1_PIN
+  #define X_MS2_PORT          PORTH
+  #define X_MS2_DDR           DDRH
+
+  #define Y_MS1_BIT           5   // Analog 5   / Pin 92  / PF5
+  #define Y_MS1_PORT          PORTH
+  #define Y_MS1_DDR           DDRH
+  #define Y_MS2_BIT           4   // Analog 4   / Pin 93  / PF4
+  #define Y_MS2_PORT          PORTF
+  #define Y_MS2_DDR           DDRF
+
+  #define Z_MS1_BIT           0   // Digital 22 / Pin 78  / PA0
+  #define Z_MS1_PORT          PORTA
+  #define Z_MS1_DDR           DDRA
+  #define Z_MS2_BIT           2   // Digital 39 / Pin 70  / PG2
+  #define Z_MS2_PORT          PORTG
+  #define Z_MS2_DDR           DDRG
+
+  #define E0_MS1_BIT          1   // Analog 9   / Pin 86  / PK1
+  #define E0_MS1_PORT         PORTK
+  #define E0_MS1_DDR          DDRK
+  #define E0_MS2_BIT          2   // Analog 10  / Pin 87  / PK2
+  #define E0_MS2_PORT         PORTK
+  #define E0_MS2_DDR          DDRK
+
+  #define E1_MS1_BIT          3   // Analog 3   / Pin 93  / PF3
+  #define E1_MS1_PORT         PORTF
+  #define E1_MS1_DDR          DDRK
+  #define E1_MS2_BIT          5   // Digital 4  / Pin 1   / PG5  / SERVO3_PIN
+  #define E1_MS2_PORT         PORTG
+  #define E1_MS2_DDR          DDRG
 #endif
 
 
