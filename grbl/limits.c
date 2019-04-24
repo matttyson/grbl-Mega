@@ -132,29 +132,39 @@ uint8_t limits_get_state()
       #error "INVERT_LIMIT_PIN_MASK is not implemented"
     #endif
 
+    /*
+        I'm abusing this routine a bit to work with the multi axis homing
+        for the MPCNC
+
+        X-MAX -> X  Axis
+        X-MIN -> X1 Axis
+        Z-MAX -> Y  Axis
+        Z-MIN -> Y1 Axis
+    */
+
     // If the pin is logic 1, then it has been tripped
-    if(PINE & 0b00010000){  // PIN E5 - X-MIN
-        limit_state |= (1 << 0);
+    if (MAX_LIMIT_PIN(0) & (1 << MAX_LIMIT_BIT(0))) { // PIN E5 - X-MIN
+        limit_state |= (1 << X1_AXIS);
     }
 
-    if(PINJ & 0b00000010) { // PIN J1 - Y-MIN
+    if (MAX_LIMIT_PIN(1) & (1 << MAX_LIMIT_BIT(1))) { // PIN J1 - Y-MIN
         //limit_state |= (1 << 1);
     }
 
-    if(PIND & 0b00000100){  // PIN D3 - Z-MIN
-        limit_state |= (1 << 2);
+    if (MAX_LIMIT_PIN(2) & (1 << MAX_LIMIT_BIT(2))) { // PIN D3 - Z-MIN
+        limit_state |= (1 << Y1_AXIS);
     }
 
-    if(PIND & 0b00001000){  // PIN E4 - X-MAX
-        limit_state |= (1 << 3);
+    if (MIN_LIMIT_PIN(0) & (1 << MIN_LIMIT_BIT(0))) { // PIN E4 - X-MAX
+        limit_state |= (1 << X_AXIS);
     }
 
-    if(PINJ & 0b00000001){  // PIN J0 - Y-MAX
+    if (MIN_LIMIT_PIN(1) & (1 << MIN_LIMIT_BIT(1))) { // PIN J0 - Y-MAX
         //limit_state |= (1 << 4);
     }
 
-    if(PIND & 0b00000100) { // PIN D2 - Z-MAX
-        limit_state |= (1 << 5);
+    if( MIN_LIMIT_PIN(2) & (1 << MIN_LIMIT_BIT(2))) { // PIN D2 - Z-MAX
+        limit_state |= (1 << Y_AXIS);
     }
 
 
