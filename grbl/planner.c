@@ -373,8 +373,10 @@ uint8_t plan_buffer_line(float *target, plan_line_data_t *pl_data)
     #ifdef DEFAULTS_RAMPS_BOARD
       if (delta_mm < 0.0 ) {
           block->direction_bits[idx] |= get_direction_pin_mask(idx);
-
+      }
+      else {
           // Clone the direction bits to the X1 and Y1 axis drivers.
+          // Need to invert direction on the slaved axis
           if (idx == X_AXIS) {
               block->direction_bits[X1_AXIS] |= get_direction_pin_mask(X1_AXIS);
           }

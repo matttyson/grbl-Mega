@@ -243,19 +243,19 @@ void st_microstepping()
     E1_MS2_DDR |= (1 << E1_MS2_BIT);
 
     X_MS1_PORT = (X_MS1_PORT & ~(1 << X_MS1_BIT)) | (MS1_XY_VALUE << X_MS1_BIT);
-    X_MS1_PORT = (X_MS2_PORT & ~(1 << X_MS2_BIT)) | (MS1_XY_VALUE << X_MS1_BIT);
+    X_MS2_PORT = (X_MS2_PORT & ~(1 << X_MS2_BIT)) | (MS2_XY_VALUE << X_MS2_BIT);
 
     Y_MS1_PORT = (Y_MS1_PORT & ~(1 << Y_MS1_BIT)) | (MS1_XY_VALUE << Y_MS1_BIT);
-    Y_MS1_PORT = (Y_MS2_PORT & ~(1 << Y_MS2_BIT)) | (MS1_XY_VALUE << Y_MS1_BIT);
+    Y_MS2_PORT = (Y_MS2_PORT & ~(1 << Y_MS2_BIT)) | (MS2_XY_VALUE << Y_MS2_BIT);
 
     Z_MS1_PORT = (Z_MS1_PORT & ~(1 << Z_MS1_BIT)) | (MS1_Z_VALUE << Z_MS1_BIT);
-    Z_MS1_PORT = (Z_MS2_PORT & ~(1 << Z_MS2_BIT)) | (MS1_Z_VALUE << Z_MS1_BIT);
+    Z_MS2_PORT = (Z_MS2_PORT & ~(1 << Z_MS2_BIT)) | (MS2_Z_VALUE << Z_MS2_BIT);
 
     E0_MS1_PORT = (E0_MS1_PORT & ~(1 << E0_MS1_BIT)) | (MS1_XY_VALUE << E0_MS1_BIT);
-    E0_MS1_PORT = (E0_MS2_PORT & ~(1 << E0_MS2_BIT)) | (MS1_XY_VALUE << E0_MS1_BIT);
+    E0_MS2_PORT = (E0_MS2_PORT & ~(1 << E0_MS2_BIT)) | (MS2_XY_VALUE << E0_MS2_BIT);
 
     E1_MS1_PORT = (E1_MS1_PORT & ~(1 << E1_MS1_BIT)) | (MS1_XY_VALUE << E1_MS1_BIT);
-    E1_MS1_PORT = (E1_MS2_PORT & ~(1 << E1_MS2_BIT)) | (MS1_XY_VALUE << E1_MS1_BIT);
+    E1_MS2_PORT = (E1_MS2_PORT & ~(1 << E1_MS2_BIT)) | (MS2_XY_VALUE << E1_MS2_BIT);
 #endif
 }
 
