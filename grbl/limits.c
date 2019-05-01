@@ -126,8 +126,6 @@ uint8_t limits_get_state()
 {
   uint8_t limit_state = 0;
   #ifdef DEFAULTS_RAMPS_BOARD
-    uint8_t pin;
-    uint8_t idx;
     #ifdef INVERT_LIMIT_PIN_MASK
       #error "INVERT_LIMIT_PIN_MASK is not implemented"
     #endif
