@@ -157,7 +157,7 @@
   #define MS1_XY_VALUE 1
   #define MS2_XY_VALUE 1
 
-  #define MS1_Z_VALUE 0
+  #define MS1_Z_VALUE 1
   #define MS2_Z_VALUE 0
 
   #define X_MS1_BIT           3   // Digital 5  / Pin 5   / PE3  / SERVO2_PIN

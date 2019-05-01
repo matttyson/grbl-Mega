@@ -459,9 +459,17 @@
   // CNC milling or laser cutting. Unlike Marlin, these defaults are only applied when the 
   // EEPROM is explicitly wiped, either by a `$RST=*` command or Grbl detecting a settings
   // version type change (not frequent).
-  #define DEFAULT_X_STEPS_PER_MM 80.0
-  #define DEFAULT_Y_STEPS_PER_MM 80.0
-  #define DEFAULT_Z_STEPS_PER_MM 80.0
+
+  // Updated for the Mostly Printed CNC.
+  #define MICROSTEPS_XY 16
+  #define STEP_REVS_XY 200
+  #define MM_PER_REV_XY (2.0*16) // 2mm belt pitch, 16 pulley teeth.
+  #define DEFAULT_X_STEPS_PER_MM (MICROSTEPS_XY * STEP_REVS_XY / MM_PER_REV_XY)
+  #define DEFAULT_Y_STEPS_PER_MM (MICROSTEPS_XY * STEP_REVS_XY / MM_PER_REV_XY)
+  #define MICROSTEPS_Z  2
+  #define MM_PER_REV_Z  2.0
+  #define STEP_REVS_Z   200
+  #define DEFAULT_Z_STEPS_PER_MM (MICROSTEPS_Z  * STEP_REVS_Z  / MM_PER_REV_Z)
   #define DEFAULT_X_MAX_RATE 2500.0 // mm/min
   #define DEFAULT_Y_MAX_RATE 2500.0 // mm/min
   #define DEFAULT_Z_MAX_RATE 500.0 // mm/min
