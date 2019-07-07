@@ -65,6 +65,7 @@ uint8_t serial_get_tx_buffer_count()
 void serial_init()
 {
   // Set baud rate
+  /*
   #if BAUD_RATE < 57600
     uint16_t UBRR0_value = ((F_CPU / (8L * BAUD_RATE)) - 1)/2 ;
     UCSR0A &= ~(1 << U2X0); // baud doubler off  - Only needed on Uno XXX
@@ -72,6 +73,9 @@ void serial_init()
     uint16_t UBRR0_value = ((F_CPU / (4L * BAUD_RATE)) - 1)/2;
     UCSR0A |= (1 << U2X0);  // baud doubler on for high baud rates, i.e. 115200
   #endif
+  */
+  uint16_t UBRR0_value = (F_CPU / (16 * BAUD_RATE)) - 1;
+  UCSR0A &= ~(1 << U2X0); // baud doubler off  - Only needed on Uno XXX
   UBRR0H = UBRR0_value >> 8;
   UBRR0L = UBRR0_value;
 
